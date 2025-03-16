@@ -1,7 +1,6 @@
-import { accounts } from "./accounts-schema";
-import { alerts } from "./alerts-schema";
-import { machines } from "./machines-schema";
-import { soundClips } from "./sound-clips-schema";
-import { users } from "./users-schema";
+export * from "./accounts-schema";
+export * from "./alerts-schema";
+export * from "./machines-schema";
+export * from "./sound-clips-schema";
+export * from "./users-schema";
 
-export { accounts, users, alerts, soundClips, machines };

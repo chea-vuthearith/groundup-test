@@ -10,13 +10,13 @@ import {
 import { machines } from "./machines-schema";
 import { soundClips } from "./sound-clips-schema";
 
-const anomalyLevelEnum = pgEnum("anomaly_level", [
+export const suspectedReasonEnum = pgEnum("suspected_reason", ["blank"]);
+export const actionRequiredEnum = pgEnum("action_required", ["blank"]);
+export const anomalyLevelEnum = pgEnum("anomaly_level", [
   "mild",
   "moderate",
   "severe",
 ]);
-const suspectedReasonEnum = pgEnum("suspected_reason", ["blank"]);
-const actionRequiredEnum = pgEnum("action_required", ["blank"]);
 
 export const alerts = pgTable("alerts", {
   id: integer("id").generatedByDefaultAsIdentity().primaryKey().notNull(),
