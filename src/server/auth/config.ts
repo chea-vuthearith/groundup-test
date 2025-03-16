@@ -42,13 +42,13 @@ export const authConfig = {
   CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        username: { label: "Username", type: "text", placeholder: "jsmith" },
-        password: { label: "Password", type: "password" }
+        username: { label: "Username", type: "text", placeholder: "admin" },
+        password: { label: "Password", type: "password", placeholder:"pw123" }
       },
       async authorize(credentials, req) {
         if ( !credentials?.username|| !credentials?.password) return null
         const user = await userAuthenticationService.authenticate(credentials.username as string, credentials.password as string)
-        return user.getValue()
+        return user
       }
     })
     /**
