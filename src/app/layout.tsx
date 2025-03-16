@@ -23,7 +23,7 @@ export default async function RootLayout({
       suppressHydrationWarning
       className={`${GeistSans.variable}`}
     >
-      <body>
+      <body className="flex h-dvh w-dvw flex-col">
         <TRPCReactProvider>
           <Navbar username={session?.user.name ?? "User"} />
           {children}
