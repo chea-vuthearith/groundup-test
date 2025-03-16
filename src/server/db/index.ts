@@ -58,7 +58,7 @@ class VercelPostgresDatabaseStrategy implements DatabaseStrategy {
   }
 }
 
-export class DbService<T> {
+export class DbService<T = VercelPgDatabase<Schema>> {
   constructor(private strategy: DatabaseStrategy) {}
   public getQueryClient(
     tx?: DrizzleTransactionScope,
@@ -68,7 +68,7 @@ export class DbService<T> {
 }
 
 // PostgresJsDatabase<Schema>
-// VercelPgDatabase<Schema>;
+// VercelPgDatabase<Schema>
 export const dbService = new DbService<VercelPgDatabase<Schema>>(
   new VercelPostgresDatabaseStrategy(),
 );
