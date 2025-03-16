@@ -3,11 +3,12 @@ import type { DefaultSession, NextAuthConfig } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials"
 import DiscordProvider from "next-auth/providers/discord";
 
-import { db } from "~/server/db";
+import { dbService } from "~/server/db";
 import {
     accounts,
   users,
 } from "~/server/db/schema";
+import { userAuthenticationService } from "../api/domains/user-management/services";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -35,6 +36,7 @@ declare module "next-auth" {
  *
  * @see https://next-auth.js.org/configuration/options
  */
+const db = dbService.getQueryClient()
 export const authConfig = {
   providers: [
   DiscordProvider,
@@ -46,25 +48,9 @@ export const authConfig = {
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials, req) {
-        // You need to provide your own logic here that takes the credentials
-        // submitted and returns either a object representing a user or value
-        // that is false/null if the credentials are invalid.
-        // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
-        // You can also use the `req` object to obtain additional parameters
-        // (i.e., the request IP address)
-        const res = await fetch("/your/endpoint", {
-          method: 'POST',
-          body: JSON.stringify(credentials),
-          headers: { "Content-Type": "application/json" }
-        })
-        const user = await res.json()
-
-        // If no error and we have user data, return it
-        if (res.ok && user) {
-          return user
-        }
-        // Return null if user data could not be retrieved
-        return null
+        if ( !credentials?.username|| !credentials?.password) return null
+        const user = await userAuthenticationService.authenticate(credentials.username as string, credentials.password as string)
+        return user.getValue()
       }
     })
     /**
@@ -85,6 +71,7 @@ export const authConfig = {
     strategy:"jwt"
   },
   secret:process.env.AUTH_SECRET,
+  //TODO: set jwt callback
   callbacks: {
     session: ({ session, user }) => ({
       ...session,

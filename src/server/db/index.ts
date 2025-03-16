@@ -1,18 +1,56 @@
+import type { ExtractTablesWithRelations } from "drizzle-orm";
+import type { PgTransaction } from "drizzle-orm/pg-core";
+import type {
+  PostgresJsDatabase,
+  PostgresJsQueryResultHKT,
+} from "drizzle-orm/postgres-js";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-
-import { env } from "~/env";
+import { env } from "~/env.js";
 import * as schema from "./schema";
 
-/**
- * Cache the database connection in development. This avoids creating a new connection on every HMR
- * update.
- */
-const globalForDb = globalThis as unknown as {
-  conn: postgres.Sql | undefined;
-};
+type Schema = typeof schema;
 
-const conn = globalForDb.conn ?? postgres(env.DATABASE_URL);
-if (env.NODE_ENV !== "production") globalForDb.conn = conn;
+export type DrizzleTransactionScope = PgTransaction<
+  PostgresJsQueryResultHKT,
+  Schema,
+  ExtractTablesWithRelations<Schema>
+>;
+interface DatabaseStrategy {
+  getQueryClient(
+    tx?: DrizzleTransactionScope,
+  ): DrizzleTransactionScope | PostgresJsDatabase<Schema>;
+}
 
-export const db = drizzle(conn, { schema });
+class PostgreSQLJSDatabaseStrategy implements DatabaseStrategy {
+  private connectionUrl: string;
+  private queryClient: PostgresJsDatabase<Schema> | null;
+
+  constructor(connectionUrl: string) {
+    this.connectionUrl = connectionUrl;
+    this.queryClient = null;
+  }
+
+  public getQueryClient(tx?: DrizzleTransactionScope) {
+    if (tx) {
+      return tx;
+    }
+
+    if (!this.queryClient) {
+      const queryConnection = postgres(this.connectionUrl);
+      this.queryClient = drizzle(queryConnection, { schema });
+    }
+
+    return this.queryClient;
+  }
+}
+
+export class DbService {
+  constructor(private strategy: DatabaseStrategy) {}
+  public getQueryClient(tx?: DrizzleTransactionScope) {
+    return this.strategy.getQueryClient(tx);
+  }
+}
+export const dbService = new DbService(
+  new PostgreSQLJSDatabaseStrategy(env.DATABASE_URL),
+);
