@@ -21,12 +21,7 @@ export type DrizzleTransactionScope = PgTransaction<
   ExtractTablesWithRelations<Schema>
 >;
 interface DatabaseStrategy {
-  getQueryClient(
-    tx?: DrizzleTransactionScope,
-  ):
-    | DrizzleTransactionScope
-    | PostgresJsDatabase<Schema>
-    | VercelPgDatabase<Schema>;
+  getQueryClient(tx?: DrizzleTransactionScope): DrizzleTransactionScope | any;
 }
 
 class PostgreSQLJSDatabaseStrategy implements DatabaseStrategy {
@@ -63,10 +58,17 @@ class VercelPostgresDatabaseStrategy implements DatabaseStrategy {
   }
 }
 
-export class DbService {
+export class DbService<T> {
   constructor(private strategy: DatabaseStrategy) {}
-  public getQueryClient(tx?: DrizzleTransactionScope) {
+  public getQueryClient(
+    tx?: DrizzleTransactionScope,
+  ): T | DrizzleTransactionScope {
     return this.strategy.getQueryClient(tx);
   }
 }
-export const dbService = new DbService(new VercelPostgresDatabaseStrategy());
+
+// PostgresJsDatabase<Schema>
+// VercelPgDatabase<Schema>;
+export const dbService = new DbService<VercelPgDatabase<Schema>>(
+  new VercelPostgresDatabaseStrategy(),
+);

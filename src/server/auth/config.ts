@@ -1,7 +1,6 @@
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import type { DefaultSession, NextAuthConfig } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials"
-import DiscordProvider from "next-auth/providers/discord";
 
 import { dbService } from "~/server/db";
 import {
@@ -39,7 +38,6 @@ declare module "next-auth" {
 const db = dbService.getQueryClient()
 export const authConfig = {
   providers: [
-  DiscordProvider,
 
   CredentialsProvider({
       name: 'Credentials',
@@ -71,14 +69,19 @@ export const authConfig = {
     strategy:"jwt"
   },
   secret:process.env.AUTH_SECRET,
-  //TODO: set jwt callback
   callbacks: {
-    session: ({ session, user }) => ({
-      ...session,
+    async jwt({token, user, session}){
+      if (user) {
+        token.id = user.id;
+      }
+      return token
+    },
+    async session ({ session, token, user }) {
+      return { ...session,
       user: {
         ...session.user,
-        id: user.id,
-      },
-    }),
+          id: token.id as string
+      } }
+    },
   },
 } satisfies NextAuthConfig;
