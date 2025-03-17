@@ -1,6 +1,6 @@
 import { relations } from "drizzle-orm";
 import { integer, pgTable, text } from "drizzle-orm/pg-core";
-import { anomalies } from "./anomaly-schema";
+import { anomalies } from "./anomalies-schema";
 import { machines } from "./machines-schema";
 
 export const soundClips = pgTable("sound_clips", {
