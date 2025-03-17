@@ -1,7 +1,9 @@
+import { Suspense } from "react";
 import { cn } from "~/lib/utils";
 import Content from "./_components/main/content";
 import Sidebar from "./_components/main/sidebar";
 import Topbar from "./_components/main/topbar";
+import Spinner from "./_components/spinner";
 
 const AlertsPage = () => {
   return (
@@ -9,7 +11,9 @@ const AlertsPage = () => {
       <Topbar />
       <div className={cn("flex grow overflow-hidden")}>
         <Sidebar />
-        <Content />
+        <Suspense fallback={<Spinner />}>
+          <Content />
+        </Suspense>
       </div>
     </div>
   );

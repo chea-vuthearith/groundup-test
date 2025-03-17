@@ -1,5 +1,6 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import type { z } from "zod";
@@ -26,27 +27,23 @@ const Content = () => {
     api.alerts.getAlertDetails.useSuspenseQuery({
       anomalyId: selectedAnomalyId,
     });
-  // const { data, isLoading } = getAlertDetailsQuery;
-  // const defaultValues = data ?? blankData;
-  // const alertDetailsForm = patchAlertDetailsValidator
-  //   .omit({ anomalyId: true })
-  //   .refine(
-  //     (data) =>
-  //       data.comments !== defaultValues.comments ||
-  //       data.actionRequired !== defaultValues.actionRequired ||
-  //       data.suspectedReason !== defaultValues.suspectedReason,
-  //   );
-  const alertDetailsForm = patchAlertDetailsValidator.omit({ anomalyId: true });
 
+  const alertDetailsForm = patchAlertDetailsValidator.omit({ anomalyId: true });
   type AlertDetailsForm = z.infer<typeof alertDetailsForm>;
+
+  const defaultValues = React.useMemo(
+    () => ({
+      comments: data.anomaly.comments ?? "",
+      actionRequired: data.anomaly.actionRequired ?? undefined,
+      suspectedReason: data.anomaly.suspectedReason ?? undefined,
+    }),
+    [data],
+  );
+
   const form = useForm<AlertDetailsForm>({
     resolver: zodResolver(alertDetailsForm),
     mode: "onChange",
-    defaultValues: {
-      comments: data.anomaly.comments ?? undefined,
-      actionRequired: data.anomaly.actionRequired ?? undefined,
-      suspectedReason: data.anomaly.suspectedReason ?? undefined,
-    },
+    defaultValues: defaultValues,
   });
 
   const patchFormDetailsMutation = api.alerts.patchAlertDetails.useMutation();
@@ -67,6 +64,10 @@ const Content = () => {
       },
     );
   };
+
+  React.useEffect(() => {
+    form.reset(defaultValues);
+  }, [defaultValues]);
 
   if (!data) return null;
 
@@ -127,7 +128,7 @@ const Content = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="font-bold text-base">
-                  actionRequired
+                  Action Required
                 </FormLabel>
                 <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger className={cn("w-72")}>
@@ -157,10 +158,10 @@ const Content = () => {
           />
           <button
             type="submit"
-            className="max-w-24 rounded-lg bg-primary px-4 py-2 text-white hover:bg-primary"
+            className="max-w-24 rounded-lg bg-primary px-4 py-2 font-bold text-white hover:bg-primary"
             disabled={patchFormDetailsMutation.isPending}
           >
-            Update
+            UPDATE
           </button>
         </form>
       </Form>
