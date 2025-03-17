@@ -28,10 +28,9 @@ const Topbar = () => {
     setMachineNameFilter,
   } = useAlertStore();
 
-  const getAllAlertSummariesQueries =
+  const [alerts, getAllAlertSummariesQuery] =
     api.alerts.getAllAlertSummaries.useSuspenseQuery();
 
-  const [alerts, alertsQuery] = getAllAlertSummariesQueries;
   const machineNames = React.useMemo(
     () => Array.from(new Set(alerts.map((alert) => alert.machineName))),
     [alerts],

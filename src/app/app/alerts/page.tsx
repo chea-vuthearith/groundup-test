@@ -8,9 +8,13 @@ import Spinner from "./_components/spinner";
 const AlertsPage = () => {
   return (
     <div className={cn("flex grow flex-col")}>
-      <Topbar />
+      <Suspense fallback={<Spinner />}>
+        <Topbar />
+      </Suspense>
       <div className={cn("flex grow overflow-hidden")}>
-        <Sidebar />
+        <Suspense fallback={<Spinner />}>
+          <Sidebar />
+        </Suspense>
         <Suspense fallback={<Spinner />}>
           <Content />
         </Suspense>

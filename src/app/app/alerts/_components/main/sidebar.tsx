@@ -8,10 +8,10 @@ import AlertCard from "../alert-card";
 import Badge from "../badge";
 
 const Sidebar = () => {
-  const getAllAlertSummariesQuery = api.alerts.getAllAlertSummaries.useQuery();
+  const [data, getAllAlertSummariesQuery] =
+    api.alerts.getAllAlertSummaries.useSuspenseQuery();
   const { selectedAnomalyId, machineNameFilter, dateRangeFilter } =
     useAlertStore();
-  const { data, isLoading } = getAllAlertSummariesQuery;
   const filteredData = React.useMemo(
     () =>
       data?.filter((alert) => {
@@ -50,7 +50,7 @@ const Sidebar = () => {
 
       {/* numeric info */}
       <div className={cn("flex w-full gap-x-3 rounded-md border-t px-4 py-2")}>
-        <p>{filteredData?.length} Alerts</p>{" "}
+        <p>{filteredData?.length} Alerts</p>
         <Badge bgColor="var(--primary)" color="#FFF">
           {newAlerts?.length} new
         </Badge>
