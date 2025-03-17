@@ -30,7 +30,6 @@ export const anomalies = pgTable("anomaly", {
     })
     .notNull()
     .unique(), // assuming a 1-1 relationship
-  //TODO: fill this in
   suspectedReason: suspectedReasonEnum("suspected_reason"),
   actionRequired: actionRequiredEnum("action_required"),
   comments: text("comments"),

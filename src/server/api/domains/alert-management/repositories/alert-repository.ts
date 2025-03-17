@@ -42,6 +42,7 @@ export class AlertRepository {
       .innerJoin(soundClips, eq(soundClips.id, anomalies.soundClipId))
       .innerJoin(machines, eq(machines.id, soundClips.machineId))
       .where(eq(anomalies.id, anomalyId));
+    console.log("got this far helloo");
     if (result[0]) return new AlertWithDetails(result[0]);
 
     throw new TRPCError({

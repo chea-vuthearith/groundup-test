@@ -1,8 +1,7 @@
 "use client";
-import { format, subDays } from "date-fns";
+import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
-import * as React from "react";
-import type { DateRange } from "react-day-picker";
+import React from "react";
 import { Button } from "~/components/ui/button";
 import { Calendar } from "~/components/ui/calendar";
 import {
@@ -18,13 +17,25 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { cn } from "~/lib/utils";
+import { api } from "~/trpc/react";
+import { useAlertStore } from "../../hooks/use-alert-store";
 
 const Topbar = () => {
-  const [machineName, setMachineName] = React.useState("all");
-  const [dateRange, setDateRange] = React.useState<DateRange | undefined>({
-    from: subDays(new Date(), 20),
-    to: new Date(),
-  });
+  const {
+    dateRangeFilter,
+    machineNameFilter,
+    setDateRangeFilter,
+    setMachineNameFilter,
+  } = useAlertStore();
+
+  const getAllAlertSummariesQueries =
+    api.alerts.getAllAlertSummaries.useSuspenseQuery();
+
+  const [alerts, alertsQuery] = getAllAlertSummariesQueries;
+  const machineNames = React.useMemo(
+    () => Array.from(new Set(alerts.map((alert) => alert.machineName))),
+    [alerts],
+  );
 
   return (
     <div
@@ -32,15 +43,18 @@ const Topbar = () => {
         "[&>button]:!ring-0 flex gap-x-4 border-b p-4 [&>button]:border-gray-400",
       )}
     >
-      <Select value={machineName} onValueChange={setMachineName}>
+      <Select value={machineNameFilter} onValueChange={setMachineNameFilter}>
         <SelectTrigger className={cn("w-36")}>
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
           {/* TODO set content */}
           <SelectItem value="all">All</SelectItem>
-          <SelectItem value="dark">Dark</SelectItem>
-          <SelectItem value="system">System</SelectItem>
+          {machineNames.map((name, idx) => (
+            <SelectItem value={name} key={idx}>
+              {name}
+            </SelectItem>
+          ))}
         </SelectContent>
       </Select>
 
@@ -53,18 +67,18 @@ const Topbar = () => {
               variant={"outline"}
               className={cn(
                 "w-72 justify-start border-gray-400 text-left font-normal",
-                !dateRange && "text-muted-foreground",
+                !dateRangeFilter && "text-muted-foreground",
               )}
             >
               <CalendarIcon />
-              {dateRange?.from ? (
-                dateRange.to ? (
+              {dateRangeFilter?.from ? (
+                dateRangeFilter.to ? (
                   <>
-                    {format(dateRange.from, "LLL dd, y")} -{" "}
-                    {format(dateRange.to, "LLL dd, y")}
+                    {format(dateRangeFilter.from, "LLL dd, y")} -{" "}
+                    {format(dateRangeFilter.to, "LLL dd, y")}
                   </>
                 ) : (
-                  format(dateRange.from, "LLL dd, y")
+                  format(dateRangeFilter.from, "LLL dd, y")
                 )
               ) : (
                 <span>Pick a filters.date</span>
@@ -75,9 +89,9 @@ const Topbar = () => {
             <Calendar
               initialFocus
               mode="range"
-              defaultMonth={dateRange?.from}
-              selected={dateRange}
-              onSelect={setDateRange}
+              defaultMonth={dateRangeFilter?.from}
+              selected={dateRangeFilter}
+              onSelect={setDateRangeFilter}
               numberOfMonths={2}
             />
           </PopoverContent>

@@ -17,6 +17,7 @@ import { patchAlertDetailsValidator } from "~/server/api/routers/alerts/validato
 import { actionRequiredEnum, suspectedReasonEnum } from "~/server/db/schema";
 import { api } from "~/trpc/react";
 import { capitalize } from "~/utils/common";
+import { useAlertStore } from "../../hooks/use-alert-store";
 import type { AlertDetails } from "../../types";
 import SoundCharts from "../sound-charts";
 
@@ -26,6 +27,7 @@ const Content = (props: AlertDetails) => {
   const form = useForm<AlertDetailsForm>({
     resolver: zodResolver(alertDetailsForm),
   });
+  const { selectedAnomalyId } = useAlertStore();
 
   const patchFormDetailsMutation = api.alerts.patchAlertDetails.useMutation();
   const alertUtils = api.useUtils().alerts;
@@ -45,22 +47,28 @@ const Content = (props: AlertDetails) => {
       },
     );
   };
+  const getAlertDetailsQuery = api.alerts.getAlertDetails.useQuery({
+    anomalyId: selectedAnomalyId,
+  });
+  const { data, isLoading } = getAlertDetailsQuery;
+
+  if (!selectedAnomalyId) return null;
 
   return (
     <div className={cn("flex grow flex-col gap-y-7 overflow-y-auto px-9 py-4")}>
       <div>
-        <h1 className="text-2xl">Alert ID #{"skdfjasdf"}</h1>
-        <p className="text-lg">Detected at TIME</p>
+        <h1 className="text-2xl">Alert ID #{data?.anomaly.id}</h1>
+        <p className="text-lg">Detected at {data?.anomaly.timestamp}</p>
       </div>
       {/* charts */}
       <div className="flex w-full border-t pt-4">
         <div className="flex w-full gap-x-14">
           <SoundCharts
-            audioUrl={props.soundClip.url}
+            audioUrl={data?.soundClip.url}
             title="Anomaly Machine Output"
           />
           <SoundCharts
-            audioUrl={props.soundClip.url}
+            audioUrl={data?.soundClip.url}
             title="Normal Machine Output"
           />
         </div>
