@@ -4,7 +4,7 @@ import Badge from "../badge";
 
 const Sidebar = () => {
   return (
-    <div className="h-full min-w-80 rounded-md border border-gray-500 border-b-0 border-l-0">
+    <div className="h-full min-w-80 rounded-md border-gray-500 border-r">
       {/* action bar */}
       <div className="w-full px-10 py-4">
         <button
