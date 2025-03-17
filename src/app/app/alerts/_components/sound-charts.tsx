@@ -18,6 +18,7 @@ const SoundCharts = (props: Props) => {
           labels: true,
           frequencyMax: 8192,
           labelsBackground: "rgba(0, 0, 0, 0.1)",
+          height: 200,
         }),
       ],
       plugins: [],

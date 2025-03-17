@@ -16,8 +16,8 @@ export class AlertService {
   }
 
   public async fetchAlertDetail(anomalyId: number) {
-    const [alert] = await Promise.all([
-      // this.markAlertAsread(anomalyId),
+    const [_, alert] = await Promise.all([
+      this.markAlertAsread(anomalyId),
       this.alertRepository.findOneWithDetailsByAnomalyId(anomalyId),
     ]);
     return alert;

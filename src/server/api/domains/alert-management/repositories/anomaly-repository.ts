@@ -29,6 +29,7 @@ export class AnomalyRepository {
     await this.dbService
       .getQueryClient(tx)
       .update(anomalies)
-      .set(entity.getValue());
+      .set(entity.getValue())
+      .where(eq(anomalies.id, entity.getValue().id));
   }
 }

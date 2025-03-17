@@ -20,18 +20,35 @@ import { capitalize } from "~/utils/common";
 import { useAlertStore } from "../../hooks/use-alert-store";
 import SoundCharts from "../sound-charts";
 
-const alertDetailsForm = patchAlertDetailsValidator.omit({ anomalyId: true });
-const Content = () => {
-  type AlertDetailsForm = z.infer<typeof alertDetailsForm>;
-  const form = useForm<AlertDetailsForm>({
-    resolver: zodResolver(alertDetailsForm),
-  });
-  const { selectedAnomalyId } = useAlertStore();
+const blankData = {
+  comments: "",
+  actionRequired: "",
+  suspectedReason: "",
+};
 
+const Content = () => {
+  const { selectedAnomalyId } = useAlertStore();
   const getAlertDetailsQuery = api.alerts.getAlertDetails.useQuery({
     anomalyId: selectedAnomalyId,
   });
   const { data, isLoading } = getAlertDetailsQuery;
+  // const defaultValues = data ?? blankData;
+  // const alertDetailsForm = patchAlertDetailsValidator
+  //   .omit({ anomalyId: true })
+  //   .refine(
+  //     (data) =>
+  //       data.comments !== defaultValues.comments ||
+  //       data.actionRequired !== defaultValues.actionRequired ||
+  //       data.suspectedReason !== defaultValues.suspectedReason,
+  //   );
+  const alertDetailsForm = patchAlertDetailsValidator.omit({ anomalyId: true });
+
+  type AlertDetailsForm = z.infer<typeof alertDetailsForm>;
+  const form = useForm<AlertDetailsForm>({
+    resolver: zodResolver(alertDetailsForm),
+    mode: "onChange",
+    defaultValues: data,
+  });
 
   const patchFormDetailsMutation = api.alerts.patchAlertDetails.useMutation();
   const alertUtils = api.useUtils().alerts;
@@ -139,6 +156,13 @@ const Content = () => {
               </FormItem>
             )}
           />
+          <button
+            type="submit"
+            className="max-w-24 rounded-lg bg-primary px-4 py-2 text-white hover:bg-primary"
+            disabled={patchFormDetailsMutation.isPending}
+          >
+            Update
+          </button>
         </form>
       </Form>
     </div>
