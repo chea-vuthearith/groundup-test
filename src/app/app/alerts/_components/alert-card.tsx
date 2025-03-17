@@ -1,6 +1,7 @@
 import type { AlertSummary } from "../types";
 import AnomalyLevelBadge from "./anomaly-level-badge";
 
+// TODO: put the summary in data prop
 interface Props extends AlertSummary {
   selected?: boolean;
 }

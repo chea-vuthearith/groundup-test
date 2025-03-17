@@ -6,7 +6,7 @@ export default {
   theme: {
     extend: {
       colors:{
-        primary: "#526CFE"
+        primary: "var(--primary)"
       },
       fontFamily: {
         sans: ["var(--font-geist-sans)", ...fontFamily.sans],

@@ -1,20 +1,20 @@
 import { capitalize } from "~/utils/common";
 import type { AlertSummary } from "../types";
+import Badge from "./badge";
 
 type Props = { severity: AlertSummary["anomalyLevel"] };
-const severityColor: Record<Props["severity"], string> = {
-  mild: "#FCA034",
-  moderate: "#FCA034",
-  severe: "#FCA034",
+const severityColor: Record<Props["severity"], Record<string, string>> = {
+  mild: { bgColor: "#FCA034", color: "#FFFFFF" },
+  moderate: { bgColor: "#FCA034", color: "#FFFFFF" },
+  severe: { bgColor: "#FCA034", color: "#FFFFFF" },
 };
 const AnomalyLevelBadge = (props: Props) => {
+  const { bgColor, color } = severityColor[props.severity];
+
   return (
-    <p
-      className="min-w-16 rounded-full px-2 py-[1px] text-center text-sm"
-      style={{ backgroundColor: severityColor[props.severity] }}
-    >
+    <Badge bgColor={bgColor} color={color}>
       {capitalize(props.severity)}
-    </p>
+    </Badge>
   );
 };
 
