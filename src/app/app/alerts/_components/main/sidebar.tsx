@@ -9,14 +9,34 @@ import Badge from "../badge";
 
 const Sidebar = () => {
   const getAllAlertSummariesQuery = api.alerts.getAllAlertSummaries.useQuery();
-  const { selectedAnomalyId } = useAlertStore();
+  const { selectedAnomalyId, machineNameFilter, dateRangeFilter } =
+    useAlertStore();
   const { data, isLoading } = getAllAlertSummariesQuery;
+  const filteredData = React.useMemo(
+    () =>
+      data?.filter((alert) => {
+        const alertTime = new Date(alert.timestamp).getTime();
+        const fromTime = dateRangeFilter?.from?.getTime();
+        const toTime = dateRangeFilter?.to?.getTime();
+        const isAfterFromTime = fromTime ? fromTime <= alertTime : true;
+        const isBeforeToTime = toTime ? alertTime <= toTime : true;
+        const isBetweenFilteredTimes = isAfterFromTime && isBeforeToTime;
+        const isFromSelectedMachine =
+          machineNameFilter === "all"
+            ? true
+            : alert.machineName === machineNameFilter;
+
+        return isBetweenFilteredTimes && isFromSelectedMachine;
+      }),
+    [machineNameFilter, dateRangeFilter, data],
+  );
+
   const newAlerts = React.useMemo(
-    () => data?.filter((alert) => !alert.hasBeenRead),
-    [data],
+    () => filteredData?.filter((alert) => !alert.hasBeenRead),
+    [filteredData],
   );
   return (
-    <div className={cn("h-full max-w-80 overflow-hidden rounded-md border-r")}>
+    <div className={cn("h-full w-80 overflow-hidden rounded-md border-r")}>
       {/* action bar */}
       <div className={cn("w-full px-10 py-4")}>
         <button
@@ -30,7 +50,7 @@ const Sidebar = () => {
 
       {/* numeric info */}
       <div className={cn("flex w-full gap-x-3 rounded-md border-t px-4 py-2")}>
-        <p>{data?.length} Alerts</p>{" "}
+        <p>{filteredData?.length} Alerts</p>{" "}
         <Badge bgColor="var(--primary)" color="#FFF">
           {newAlerts?.length} new
         </Badge>
@@ -42,7 +62,7 @@ const Sidebar = () => {
           "flex w-full flex-col gap-y-3 overflow-y-auto rounded-md border-t p-4",
         )}
       >
-        {data?.map((alert) => (
+        {filteredData?.map((alert) => (
           <AlertCard
             key={alert.anomalyId}
             isSelected={selectedAnomalyId === alert.anomalyId}
