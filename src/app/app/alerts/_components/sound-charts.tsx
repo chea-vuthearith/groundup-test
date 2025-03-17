@@ -11,9 +11,10 @@ const SoundCharts = (props: Props) => {
     wavesurfer.registerPlugin(
       Spectrogram.create({
         labels: true,
-        frequencyMax: 8192,
+        scale: "mel", // or 'linear', 'logarithmic', 'bark', 'erb'
+        frequencyMax: 16384,
+        frequencyMin: 0,
         labelsBackground: "rgba(0, 0, 0, 0.1)",
-        height: 200,
       }),
     );
   };

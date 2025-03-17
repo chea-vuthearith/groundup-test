@@ -35,6 +35,7 @@ const Sidebar = () => {
     () => filteredData?.filter((alert) => !alert.hasBeenRead),
     [filteredData],
   );
+
   return (
     <div className={cn("h-full w-80 overflow-y-auto rounded-md border-r")}>
       {/* action bar */}

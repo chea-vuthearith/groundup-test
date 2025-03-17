@@ -5,7 +5,7 @@ import type { AlertDetails } from "../types";
 type AnomalyId = AlertDetails["anomaly"]["id"];
 type MachineName = AlertDetails["machine"]["name"];
 type AlertStore = {
-  selectedAnomalyId: AnomalyId;
+  selectedAnomalyId: AnomalyId | null;
   dateRangeFilter: DateRange | undefined;
   machineNameFilter: MachineName;
   setSelectedAnomalyId: (anomalyId: AnomalyId) => void;
@@ -13,12 +13,14 @@ type AlertStore = {
   setMachineNameFilter: (machineName: MachineName) => void;
 };
 
-export const useAlertStore = create<AlertStore>((set) => ({
-  selectedAnomalyId: 1,
-  machineNameFilter: "all",
-  dateRangeFilter: undefined,
-  setDateRangeFilter: (dateRandge) => set({ dateRangeFilter: dateRandge }),
-  setMachineNameFilter: (machineName) =>
-    set({ machineNameFilter: machineName }),
-  setSelectedAnomalyId: (anomalyId) => set({ selectedAnomalyId: anomalyId }),
-}));
+export const useAlertStore = create<AlertStore>((set) => {
+  return {
+    selectedAnomalyId: null,
+    machineNameFilter: "all",
+    dateRangeFilter: undefined,
+    setDateRangeFilter: (dateRandge) => set({ dateRangeFilter: dateRandge }),
+    setMachineNameFilter: (machineName) =>
+      set({ machineNameFilter: machineName }),
+    setSelectedAnomalyId: (anomalyId) => set({ selectedAnomalyId: anomalyId }),
+  };
+});

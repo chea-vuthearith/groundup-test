@@ -1,5 +1,6 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { TRPCError } from "@trpc/server";
 import { format } from "date-fns";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -24,6 +25,10 @@ import SoundCharts from "../sound-charts";
 
 const Content = () => {
   const { selectedAnomalyId } = useAlertStore();
+
+  if (selectedAnomalyId === null)
+    throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+
   const [data, getAlertDetailsQuery] =
     api.alerts.getAlertDetails.useSuspenseQuery({
       anomalyId: selectedAnomalyId,
@@ -32,19 +37,22 @@ const Content = () => {
   const alertDetailsForm = patchAlertDetailsValidator.omit({ anomalyId: true });
   type AlertDetailsForm = z.infer<typeof alertDetailsForm>;
 
-  const defaultValues = React.useMemo(
-    () => ({
-      comments: data.anomaly.comments ?? "",
+  const defaultValues = React.useMemo(() => {
+    return {
+      comments: data.anomaly.comments,
       actionRequired: data.anomaly.actionRequired,
       suspectedReason: data.anomaly.suspectedReason,
-    }),
-    [data],
-  );
+    };
+  }, [data]);
 
   const form = useForm<AlertDetailsForm>({
     resolver: zodResolver(alertDetailsForm),
     mode: "onChange",
-    defaultValues: defaultValues,
+    defaultValues: {
+      actionRequired: null,
+      comments: null,
+      suspectedReason: null,
+    },
   });
 
   const patchFormDetailsMutation = api.alerts.patchAlertDetails.useMutation();
@@ -65,8 +73,11 @@ const Content = () => {
   };
 
   React.useEffect(() => {
-    form.reset(defaultValues);
-  }, [defaultValues, form.reset]);
+    form.reset();
+    form.setValue("comments", defaultValues.comments);
+    form.setValue("actionRequired", defaultValues.actionRequired);
+    form.setValue("suspectedReason", defaultValues.suspectedReason);
+  }, [defaultValues, form.setValue, form.reset]);
 
   return (
     <div className={cn("flex grow flex-col gap-y-7 overflow-y-auto px-9 py-4")}>
@@ -180,4 +191,10 @@ const Content = () => {
   );
 };
 
-export default Content;
+const ContentWrapper = () => {
+  const { selectedAnomalyId } = useAlertStore();
+
+  return selectedAnomalyId ? <Content /> : null;
+};
+
+export default ContentWrapper;

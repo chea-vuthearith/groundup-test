@@ -1,0 +1,1 @@
+ALTER TABLE "anomalies" ALTER COLUMN "timestamp" SET DATA TYPE timestamp;
