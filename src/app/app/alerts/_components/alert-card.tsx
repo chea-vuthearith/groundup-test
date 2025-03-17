@@ -1,5 +1,6 @@
 import { format } from "date-fns";
 import { cn } from "~/lib/utils";
+import { api } from "~/trpc/react";
 import { useAlertStore } from "../hooks/use-alert-store";
 import type { AlertSummary } from "../types";
 import AnomalyLevelBadge from "./anomaly-level-badge";
@@ -10,9 +11,26 @@ interface Props {
 }
 const AlertCard = (props: Props) => {
   const { setSelectedAnomalyId } = useAlertStore();
+  const utils = api.useUtils();
+  const markAsRead = (anomalyId: number) => {
+    utils.alerts.getAllAlertSummaries.setData(undefined, (oldAlerts) =>
+      oldAlerts
+        ? oldAlerts.map((alert) =>
+            alert.anomalyId === anomalyId
+              ? { ...alert, hasBeenRead: true }
+              : alert,
+          )
+        : [],
+    );
+  };
+
+  const handleClick = () => {
+    markAsRead(props.data.anomalyId);
+    setSelectedAnomalyId(props.data.anomalyId);
+  };
   return (
     <div
-      onClick={() => setSelectedAnomalyId(props.data.anomalyId)}
+      onClick={handleClick}
       className={cn(
         "flex w-full cursor-pointer flex-col justify-center gap-3 rounded-md border-2 border-gray-300 py-2 pr-3 pl-7 text-gray-600",
         props.isSelected && "border-primary",

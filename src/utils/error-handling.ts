@@ -2,7 +2,7 @@
 import { TRPCError } from "@trpc/server";
 
 /**
-@description wraps function in a try catch and throws a 500 TRPC Error, use in repository.
+@description wraps function in a try catch and throws a 500 TRPC Error, useful in repositories.
  **/
 
 export function ErrorBoundary(): MethodDecorator {

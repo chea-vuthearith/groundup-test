@@ -1,6 +1,7 @@
 import { createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 import { actionRequiredEnum, suspectedReasonEnum } from "~/server/db/schema";
+
 export const getAlertDetailsValidator = z.object({
   anomalyId: z.number(),
 });
@@ -10,4 +11,8 @@ export const patchAlertDetailsValidator = z.object({
   comments: z.string().nullish(),
   actionRequired: createSelectSchema(actionRequiredEnum).nullish(),
   suspectedReason: createSelectSchema(suspectedReasonEnum).nullish(),
+});
+
+export const decodeAndPatchSoundClipValidator = z.object({
+  soundClipId: z.number(),
 });

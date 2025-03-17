@@ -82,14 +82,8 @@ const Content = () => {
       {/* charts */}
       <div className="flex w-full border-t pt-4">
         <div className="flex w-full gap-x-14">
-          <SoundCharts
-            audioUrl={data.soundClip.url}
-            title="Anomaly Machine Output"
-          />
-          <SoundCharts
-            audioUrl={data.soundClip.url}
-            title="Normal Machine Output"
-          />
+          <SoundCharts data={data.soundClip} title="Anomaly Machine Output" />
+          <SoundCharts data={data.soundClip} title="Normal Machine Output" />
         </div>
       </div>
 

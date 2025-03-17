@@ -9,4 +9,10 @@ export class SoundClip {
   public getValue() {
     return this.props;
   }
+
+  public setSpectrogram(spectrogram: SoundClipProps["spectrogram"]) {
+    this.props.spectrogram = spectrogram;
+
+    return this;
+  }
 }

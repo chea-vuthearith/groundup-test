@@ -1,6 +1,10 @@
-import { alertService } from "../../domains/alert-management/services";
+import {
+  alertService,
+  soundClipService,
+} from "../../domains/alert-management/services";
 import { createTRPCRouter, protectedProcedure } from "../../trpc";
 import {
+  decodeAndPatchSoundClipValidator,
   getAlertDetailsValidator,
   patchAlertDetailsValidator,
 } from "./validator";
@@ -25,5 +29,10 @@ export const alertsRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const { anomalyId, ...anomalyDetails } = input;
       await alertService.modifyAlertDetails(anomalyId, anomalyDetails);
+    }),
+  decodeAndPatchSoundClip: protectedProcedure
+    .input(decodeAndPatchSoundClipValidator)
+    .mutation(async ({ ctx, input }) => {
+      await soundClipService.decodeSpectrogramAndStore(input.soundClipId);
     }),
 });

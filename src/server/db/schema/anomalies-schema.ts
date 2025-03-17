@@ -12,14 +12,14 @@ import { soundClips } from "./sound-clips-schema";
 
 export const suspectedReasonEnum = pgEnum("suspected_reason", [
   "Unknown Anomaly",
-  "Restart Machine",
-  "Replace Component",
-  "Perform Software Update",
-]);
-export const actionRequiredEnum = pgEnum("action_required", [
   "Mechanical Issue",
   "Electrical Failure",
   "Software Crash",
+]);
+export const actionRequiredEnum = pgEnum("action_required", [
+  "Restart Machine",
+  "Replace Component",
+  "Perform Software Update",
 ]);
 export const anomalyLevelEnum = pgEnum("anomaly_level", [
   "mild",

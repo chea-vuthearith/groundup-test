@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { asc, eq } from "drizzle-orm";
+import { asc, desc, eq, sql } from "drizzle-orm";
 import type { DbService } from "~/server/db";
 import { anomalies, machines, soundClips } from "~/server/db/schema";
 import { ErrorBoundary } from "~/utils/error-handling";
@@ -24,7 +24,10 @@ export class AlertRepository {
       .from(anomalies)
       .innerJoin(soundClips, eq(soundClips.id, anomalies.soundClipId))
       .innerJoin(machines, eq(machines.id, soundClips.machineId))
-      .orderBy(asc(anomalies.id));
+      .orderBy(
+        desc(sql`CASE WHEN ${anomalies.hasBeenRead} = false THEN 1 ELSE 0 END`),
+        asc(anomalies.id),
+      );
 
     const entities = result.map((r) => new AlertSummary(r));
     return entities;
