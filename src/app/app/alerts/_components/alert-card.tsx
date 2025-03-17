@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import { cn } from "~/lib/utils";
 import { useAlertStore } from "../hooks/use-alert-store";
 import type { AlertSummary } from "../types";
@@ -31,8 +32,7 @@ const AlertCard = (props: Props) => {
       <div>
         <p className={cn("font-bold")}>{props.data.suspectedReason}</p>
         <p className={cn("")}>
-          {" "}
-          Detected at {new Date(props.data.timestamp).toString()}
+          Detected at {format(props.data.timestamp, "yyyy-MM-dd kk:mm:ss")}
         </p>
       </div>
 

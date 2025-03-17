@@ -1,5 +1,6 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { format } from "date-fns";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -65,15 +66,15 @@ const Content = () => {
 
   React.useEffect(() => {
     form.reset(defaultValues);
-  }, [defaultValues]);
-
-  if (!data) return null;
+  }, [defaultValues, form.reset]);
 
   return (
     <div className={cn("flex grow flex-col gap-y-7 overflow-y-auto px-9 py-4")}>
       <div>
-        <h1 className="text-2xl">Alert ID #{data?.anomaly.id}</h1>
-        <p className="text-lg">Detected at {data?.anomaly.timestamp}</p>
+        <h1 className="text-2xl">Alert ID #{data.anomaly.id}</h1>
+        <p className="text-lg">
+          Detected at {format(data?.anomaly.timestamp, "yyyy-MM-dd kk:mm:ss")}
+        </p>
       </div>
       {/* charts */}
       <div className="flex w-full border-t pt-4">
