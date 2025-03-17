@@ -4,16 +4,10 @@ import FFT from "fft.js";
 export const capitalize = (value: string) =>
   value.charAt(0).toUpperCase() + value.slice(1);
 
-/**
- * Converts an audio buffer into a spectrogram as Uint8Array[][]
- * @param {ArrayBuffer} audioData - The raw audio file data (e.g., MP3, WAV).
- * @param {number} fftSize - The FFT window size (e.g., 512, 1024).
- * @returns {Promise<Uint8Array[][]>} - The spectrogram.
- */
 export async function generateSpectrogram(
   audioData: ArrayBuffer,
   fftSize = 512,
-) {
+): Promise<Uint8Array<ArrayBuffer>[]> {
   // Decode audio data to PCM
   const audioBuffer = await decodeAudioData(audioData);
   const pcmSamples = audioBuffer.getChannelData(0); // Use first channel

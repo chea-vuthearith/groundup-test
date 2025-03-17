@@ -25,7 +25,7 @@ export class AlertService {
 
   public async markAlertAsread(anomalyId: AnomalyProps["id"]) {
     const anomaly = await this.anomalyRepository.findOneById(anomalyId);
-    await this.anomalyRepository.update(anomaly?.setReadStatus(true));
+    await this.anomalyRepository.update(anomaly.setReadStatus(true));
   }
 
   public async modifyAlertDetails(
