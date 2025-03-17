@@ -1,4 +1,3 @@
-import { TRPCError } from "@trpc/server";
 import type { AlertRepository } from "../repositories/alert-repository";
 import type { AnomalyRepository } from "../repositories/anomaly-repository";
 
@@ -13,13 +12,15 @@ export class AlertService {
   }
 
   public async fetchAlertDetail(anomalyId: number) {
-    return await this.alertRepository.findOneWithDetailsByAnomalyId(anomalyId);
+    const [_, alert] = await Promise.all([
+      this.markAlertAsread(anomalyId),
+      this.alertRepository.findOneWithDetailsByAnomalyId(anomalyId),
+    ]);
+    return alert;
   }
 
   public async markAlertAsread(anomalyId: number) {
     const anomaly = await this.anomalyRepository.findOneById(anomalyId);
-    if (!anomaly)
-      throw new TRPCError({ message: "Anomaly not found", code: "NOT_FOUND" });
     await this.anomalyRepository.update(anomaly?.setReadStatus(true));
   }
 }

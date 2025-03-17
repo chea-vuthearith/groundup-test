@@ -6,7 +6,7 @@ import { User } from "../models/user";
 
 export class UserRepository {
   constructor(private readonly dbService: DbService) {}
-  public async findOneOrNullByUsername(username: string) {
+  public async findOneByUsername(username: string) {
     try {
       const result = await this.dbService
         .getQueryClient()
@@ -14,7 +14,7 @@ export class UserRepository {
 
       if (result) return new User(result);
 
-      return null;
+      throw new TRPCError({ message: "User not found", code: "NOT_FOUND" });
     } catch (e) {
       const error = e as Error;
       throw new TRPCError({

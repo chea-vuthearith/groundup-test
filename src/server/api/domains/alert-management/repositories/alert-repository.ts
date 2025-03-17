@@ -31,6 +31,7 @@ export class AlertRepository {
       });
     }
   }
+
   public async findOneWithDetailsByAnomalyId(anomalyId: number) {
     try {
       const result = await this.dbService
@@ -45,6 +46,11 @@ export class AlertRepository {
         .innerJoin(machines, eq(machines.id, soundClips.machineId))
         .where(eq(anomalies.id, anomalyId));
       if (result[0]) return new AlertWithDetails(result[0]);
+
+      throw new TRPCError({
+        message: "Alert not found",
+        code: "NOT_FOUND",
+      });
     } catch (e) {
       const error = e as Error;
       throw new TRPCError({

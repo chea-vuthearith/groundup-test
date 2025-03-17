@@ -15,8 +15,12 @@ export class AnomalyRepository {
         .from(anomalies)
         .where(eq(anomalies.id, id));
 
-      if (!result[0]) return null;
-      return new Anomaly(result[0]);
+      if (result[0]) return new Anomaly(result[0]);
+
+      throw new TRPCError({
+        message: "Anomaly not found",
+        code: "NOT_FOUND",
+      });
     } catch (e) {
       const error = e as Error;
       throw new TRPCError({
