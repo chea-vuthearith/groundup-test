@@ -5,7 +5,7 @@ import Badge from "../badge";
 
 const Sidebar = () => {
   return (
-    <div className={cn("h-full min-w-80 rounded-md border-gray-500 border-r")}>
+    <div className={cn("h-full min-w-80 rounded-md border-r")}>
       {/* action bar */}
       <div className={cn("w-full px-10 py-4")}>
         <button
@@ -18,11 +18,7 @@ const Sidebar = () => {
       </div>
 
       {/* numeric info */}
-      <div
-        className={cn(
-          "flex w-full gap-x-3 rounded-md border-gray-500 border-t px-4 py-2",
-        )}
-      >
+      <div className={cn("flex w-full gap-x-3 rounded-md border-t px-4 py-2")}>
         <p>6 alerts</p>{" "}
         <Badge bgColor="var(--primary)" color="#FFF">
           2 new
@@ -30,7 +26,7 @@ const Sidebar = () => {
       </div>
 
       {/* alert card container */}
-      <div className={cn("w-full rounded-md border-gray-500 border-t p-4")}>
+      <div className={cn("w-full rounded-md border-t p-4")}>
         <AlertCard
           hasBeenRead={true}
           anomalyId={88813211}

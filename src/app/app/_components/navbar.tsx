@@ -11,15 +11,11 @@ const pages = ["dashboard", "alerts"];
 const Navbar = ({ username }: { username: string }) => {
   const currPage = usePathname();
   return (
-    <div
-      className={cn(
-        "flex items-center gap-7 border-b border-b-gray-500 px-[0.875rem]",
-      )}
-    >
+    <div className={cn("flex items-center gap-7 border-b px-[0.875rem]")}>
       <Image src={groundUpLogo} alt="GroundUp Logo" />
       <nav className={cn("flex w-full items-center justify-between")}>
         {/* left nav */}
-        <ul className={cn("flex flex-row text-sm")}>
+        <ul className={cn("flex flex-row")}>
           {pages.map((page) => {
             const pathname = `/app/${page}`;
             const isCurrentPage = currPage === pathname;
@@ -51,7 +47,7 @@ const Navbar = ({ username }: { username: string }) => {
           <User />
           <BellDot />
           <div className={cn("min-h-full w-[1px] bg-gray-500")} />
-          <p className={cn("text-gray-500 text-sm")}>
+          <p className={cn("text-gray-500")}>
             Welcome {capitalize(username)}!
           </p>
         </ul>

@@ -27,12 +27,17 @@ const Topbar = () => {
   });
 
   return (
-    <div className={cn("flex gap-x-4 border-b border-b-gray-500 p-4")}>
+    <div
+      className={cn(
+        "[&>button]:!ring-0 flex gap-x-4 border-b p-4 [&>button]:border-gray-400 ",
+      )}
+    >
       <Select value={machineName} onValueChange={setMachineName}>
-        <SelectTrigger className={cn("w-36 border-gray-500")}>
+        <SelectTrigger className={cn("w-36")}>
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
+          {/* TODO set content */}
           <SelectItem value="all">All</SelectItem>
           <SelectItem value="dark">Dark</SelectItem>
           <SelectItem value="system">System</SelectItem>
@@ -40,14 +45,14 @@ const Topbar = () => {
       </Select>
 
       {/* Date */}
-      <div className={cn("grid gap-2")}>
+      <div className={cn("grid gap-2 ")}>
         <Popover>
           <PopoverTrigger asChild>
             <Button
               id="filters.date"
               variant={"outline"}
               className={cn(
-                "w-[300px] justify-start border-gray-500 text-left font-normal",
+                "w-72 justify-start border-gray-400 text-left font-normal",
                 !dateRange && "text-muted-foreground",
               )}
             >

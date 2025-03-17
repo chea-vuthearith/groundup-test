@@ -10,8 +10,8 @@ const AlertCard = (props: Props) => {
   return (
     <div
       className={cn(
-        "flex w-full flex-col justify-center gap-3 rounded-md border py-2 pr-3 pl-7 text-gray-600 text-sm",
-        props.selected ? "border-primary" : "border-gray-500",
+        "flex w-full flex-col justify-center gap-3 rounded-md border py-2 pr-3 pl-7 text-gray-600",
+        props.selected && "border-primary",
       )}
     >
       <div className={cn("relative flex items-center justify-between ")}>

@@ -1,11 +1,7 @@
-import React from 'react'
+import { cn } from "~/lib/utils";
 
-type Props = {}
+const Content = () => {
+  return <div className={cn("px-9 py-4")}>content</div>;
+};
 
-const Content = (props: Props) => {
-  return (
-    <div>content</div>
-  )
-}
-
-export default Content
+export default Content;

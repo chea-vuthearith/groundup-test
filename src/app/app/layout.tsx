@@ -14,7 +14,7 @@ const AppLayout = async (props: Props) => {
       <div
         className={cn("flex h-full w-full grow border-[#F8F8FF] border-[20px]")}
       >
-        <div className={cn("flex grow rounded-lg border border-[#A2AEBC]")}>
+        <div className={cn("flex grow rounded-lg border")}>
           {props.children}
         </div>
       </div>
