@@ -37,6 +37,7 @@ declare module "next-auth" {
  */
 const db = dbService.getQueryClient()
 export const authConfig = {
+  trustHost:true,
   providers: [
 
   CredentialsProvider({
