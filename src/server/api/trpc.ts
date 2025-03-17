@@ -12,7 +12,6 @@ import superjson from "superjson";
 import { ZodError } from "zod";
 
 import { auth } from "~/server/auth";
-import { dbService } from "../db";
 
 /**
  * 1. CONTEXT
@@ -28,10 +27,11 @@ import { dbService } from "../db";
  */
 export const createTRPCContext = async (opts: { headers: Headers }) => {
   const session = await auth();
-  const db = dbService.getQueryClient();
+  // not using direct db queries
+  // const db = dbService.getQueryClient();
 
   return {
-    db,
+    // db,
     session,
     ...opts,
   };
