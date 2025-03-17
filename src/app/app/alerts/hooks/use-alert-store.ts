@@ -1,4 +1,3 @@
-import { subDays } from "date-fns";
 import type { DateRange } from "react-day-picker";
 import { create } from "zustand";
 import type { AlertDetails } from "../types";
@@ -17,7 +16,7 @@ type AlertStore = {
 export const useAlertStore = create<AlertStore>((set) => ({
   selectedAnomalyId: 1,
   machineNameFilter: "all",
-  dateRangeFilter: { from: subDays(new Date(), 20), to: new Date() },
+  dateRangeFilter: undefined,
   setDateRangeFilter: (dateRandge) => set({ dateRangeFilter: dateRandge }),
   setMachineNameFilter: (machineName) =>
     set({ machineNameFilter: machineName }),

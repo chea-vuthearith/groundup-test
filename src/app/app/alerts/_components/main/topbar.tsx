@@ -81,7 +81,7 @@ const Topbar = () => {
                   format(dateRangeFilter.from, "LLL dd, y")
                 )
               ) : (
-                <span>Pick a filters.date</span>
+                <span>Pick some dates to filter through</span>
               )}
             </Button>
           </PopoverTrigger>

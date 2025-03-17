@@ -20,12 +20,6 @@ import { capitalize } from "~/utils/common";
 import { useAlertStore } from "../../hooks/use-alert-store";
 import SoundCharts from "../sound-charts";
 
-const blankData = {
-  comments: "",
-  actionRequired: "",
-  suspectedReason: "",
-};
-
 const Content = () => {
   const { selectedAnomalyId } = useAlertStore();
   const [data, getAlertDetailsQuery] =
@@ -49,9 +43,9 @@ const Content = () => {
     resolver: zodResolver(alertDetailsForm),
     mode: "onChange",
     defaultValues: {
-      comments: data.anomaly.comments ?? "",
-      actionRequired: data.anomaly.actionRequired ?? "",
-      suspectedReason: data.anomaly.suspectedReason ?? "",
+      comments: data.anomaly.comments ?? undefined,
+      actionRequired: data.anomaly.actionRequired ?? undefined,
+      suspectedReason: data.anomaly.suspectedReason ?? undefined,
     },
   });
 

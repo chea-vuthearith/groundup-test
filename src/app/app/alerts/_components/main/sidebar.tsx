@@ -36,7 +36,7 @@ const Sidebar = () => {
     [filteredData],
   );
   return (
-    <div className={cn("h-full w-80 overflow-hidden rounded-md border-r")}>
+    <div className={cn("h-full w-80 overflow-y-auto rounded-md border-r")}>
       {/* action bar */}
       <div className={cn("w-full px-10 py-4")}>
         <button
@@ -58,9 +58,7 @@ const Sidebar = () => {
 
       {/* alert card container */}
       <div
-        className={cn(
-          "flex w-full flex-col gap-y-3 overflow-y-auto rounded-md border-t p-4",
-        )}
+        className={cn("flex w-full flex-col gap-y-3 rounded-md border-t p-4")}
       >
         {filteredData?.map((alert) => (
           <AlertCard
