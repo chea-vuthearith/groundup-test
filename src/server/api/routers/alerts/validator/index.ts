@@ -7,7 +7,7 @@ export const getAlertDetailsValidator = z.object({
 
 export const patchAlertDetailsValidator = z.object({
   anomalyId: z.number(),
-  comments: z.string().optional(),
-  actionRequired: createSelectSchema(actionRequiredEnum).optional(),
-  suspectedReason: createSelectSchema(suspectedReasonEnum).optional(),
+  comments: z.string().nullish(),
+  actionRequired: createSelectSchema(actionRequiredEnum).nullish(),
+  suspectedReason: createSelectSchema(suspectedReasonEnum).nullish(),
 });

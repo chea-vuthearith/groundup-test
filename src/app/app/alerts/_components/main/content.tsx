@@ -2,7 +2,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "react-hot-toast";
+import { toast } from "sonner";
 import type { z } from "zod";
 import { Form, FormField, FormItem, FormLabel } from "~/components/ui/form";
 import {
@@ -34,8 +34,8 @@ const Content = () => {
   const defaultValues = React.useMemo(
     () => ({
       comments: data.anomaly.comments ?? "",
-      actionRequired: data.anomaly.actionRequired ?? undefined,
-      suspectedReason: data.anomaly.suspectedReason ?? undefined,
+      actionRequired: data.anomaly.actionRequired,
+      suspectedReason: data.anomaly.suspectedReason,
     }),
     [data],
   );
@@ -53,13 +53,11 @@ const Content = () => {
       { anomalyId: selectedAnomalyId, ...data },
       {
         onSuccess: () => {
-          toast.success("Details updated!");
-          void alertUtils.getAlertDetails.invalidate({
-            anomalyId: selectedAnomalyId,
-          });
+          toast("Details updated!");
+          void alertUtils.invalidate();
         },
         onError: () => {
-          toast.error("Something went wrong");
+          toast("Something went wrong");
         },
       },
     );
@@ -106,9 +104,12 @@ const Content = () => {
                 <FormLabel className="font-bold text-base">
                   Suspected Reason
                 </FormLabel>
-                <Select value={field.value} onValueChange={field.onChange}>
+                <Select
+                  value={field.value ?? undefined}
+                  onValueChange={field.onChange}
+                >
                   <SelectTrigger className={cn("w-72")}>
-                    <SelectValue />
+                    <SelectValue placeholder="Select Reason" />
                   </SelectTrigger>
                   <SelectContent>
                     {suspectedReasonEnum.enumValues.map((value, idx) => (
@@ -130,9 +131,12 @@ const Content = () => {
                 <FormLabel className="font-bold text-base">
                   Action Required
                 </FormLabel>
-                <Select value={field.value} onValueChange={field.onChange}>
+                <Select
+                  value={field.value ?? undefined}
+                  onValueChange={field.onChange}
+                >
                   <SelectTrigger className={cn("w-72")}>
-                    <SelectValue />
+                    <SelectValue placeholder="Select Action" />
                   </SelectTrigger>
                   <SelectContent>
                     {actionRequiredEnum.enumValues.map((value, idx) => (
@@ -152,14 +156,20 @@ const Content = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="font-bold text-base">Comments</FormLabel>
-                <Textarea className="h-24" {...field} />
+                <Textarea
+                  className="h-24"
+                  {...field}
+                  value={field.value ?? undefined}
+                />
               </FormItem>
             )}
           />
           <button
             type="submit"
-            className="max-w-24 rounded-lg bg-primary px-4 py-2 font-bold text-white hover:bg-primary"
-            disabled={patchFormDetailsMutation.isPending}
+            className="hover:!bg-primary max-w-24 rounded-lg bg-primary px-4 py-2 font-bold text-white opacity-100 transition-all disabled:cursor-not-allowed disabled:opacity-50"
+            disabled={
+              patchFormDetailsMutation.isPending || !form.formState.isValid
+            }
           >
             UPDATE
           </button>

@@ -23,7 +23,7 @@ export class AlertRepository {
       .from(anomalies)
       .innerJoin(soundClips, eq(soundClips.id, anomalies.soundClipId))
       .innerJoin(machines, eq(machines.id, soundClips.machineId))
-      .orderBy(asc(anomalies.timestamp));
+      .orderBy(asc(anomalies.id));
 
     const entities = result.map((r) => new AlertSummary(r));
     return entities;

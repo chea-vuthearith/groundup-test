@@ -1,4 +1,5 @@
 import "~/styles/globals.css";
+import { Toaster } from "~/components/ui/sonner";
 
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
@@ -22,6 +23,7 @@ export default async function RootLayout({
     >
       <body className={cn("flex h-dvh w-dvw flex-col")}>
         <TRPCReactProvider>{children}</TRPCReactProvider>
+        <Toaster />
       </body>
     </html>
   );

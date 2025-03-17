@@ -10,7 +10,9 @@ import {
 } from "drizzle-orm/pg-core";
 import { soundClips } from "./sound-clips-schema";
 
-export const suspectedReasonEnum = pgEnum("suspected_reason", ["blank"]);
+export const suspectedReasonEnum = pgEnum("suspected_reason", [
+  "Unknown Anomaly",
+]);
 export const actionRequiredEnum = pgEnum("action_required", ["blank"]);
 export const anomalyLevelEnum = pgEnum("anomaly_level", [
   "mild",
