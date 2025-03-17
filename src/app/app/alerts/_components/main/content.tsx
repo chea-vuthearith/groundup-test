@@ -39,10 +39,10 @@ const Content = () => {
 
   const defaultValues = React.useMemo(() => {
     return {
-      comments: data.anomaly.comments,
-      actionRequired: data.anomaly.actionRequired,
-      suspectedReason: data.anomaly.suspectedReason,
-    };
+      comments: data.anomaly.comments ?? "",
+      actionRequired: data.anomaly.actionRequired ?? "",
+      suspectedReason: data.anomaly.suspectedReason ?? "",
+    } as AlertDetailsForm;
   }, [data]);
 
   const form = useForm<AlertDetailsForm>({
@@ -68,11 +68,8 @@ const Content = () => {
   };
 
   React.useEffect(() => {
-    form.reset(undefined, { keepDefaultValues: false });
-    form.setValue("comments", defaultValues.comments);
-    form.setValue("actionRequired", defaultValues.actionRequired);
-    form.setValue("suspectedReason", defaultValues.suspectedReason);
-  }, [defaultValues, form.setValue, form.reset]);
+    form.reset(defaultValues);
+  }, [defaultValues, form.reset]);
 
   return (
     <div className={cn("flex grow flex-col gap-y-7 overflow-y-auto px-9 py-4")}>

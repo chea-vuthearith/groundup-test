@@ -4,6 +4,7 @@ import type { DbService } from "~/server/db";
 import { anomalies, machines, soundClips } from "~/server/db/schema";
 import { ErrorBoundary } from "~/utils/error-handling";
 import { AlertSummary, AlertWithDetails } from "../models/alert";
+import type { AnomalyProps } from "../models/anomaly";
 
 export class AlertRepository {
   constructor(private readonly dbService: DbService) {}
@@ -30,7 +31,7 @@ export class AlertRepository {
   }
 
   @ErrorBoundary()
-  public async findOneWithDetailsByAnomalyId(anomalyId: number) {
+  public async findOneWithDetailsByAnomalyId(anomalyId: AnomalyProps["id"]) {
     const result = await this.dbService
       .getQueryClient()
       .select({

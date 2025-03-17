@@ -4,7 +4,6 @@ import { useAlertStore } from "../hooks/use-alert-store";
 import type { AlertSummary } from "../types";
 import AnomalyLevelBadge from "./anomaly-level-badge";
 
-// TODO: put the summary in data prop
 interface Props {
   isSelected?: boolean;
   data: AlertSummary;

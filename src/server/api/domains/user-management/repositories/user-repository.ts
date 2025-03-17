@@ -3,13 +3,13 @@ import { eq } from "drizzle-orm";
 import type { DbService } from "~/server/db";
 import { users } from "~/server/db/schema";
 import { ErrorBoundary } from "~/utils/error-handling";
-import { User } from "../models/user";
+import { User, type UserProps } from "../models/user";
 
 export class UserRepository {
   constructor(private readonly dbService: DbService) {}
 
   @ErrorBoundary()
-  public async findOneByUsername(username: string) {
+  public async findOneByUsername(username: UserProps["name"]) {
     const result = await this.dbService
       .getQueryClient()
       .query.users.findFirst({ where: eq(users.name, username) });

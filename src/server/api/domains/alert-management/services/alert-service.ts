@@ -15,7 +15,7 @@ export class AlertService {
     return await this.alertRepository.findAllSummaries();
   }
 
-  public async fetchAlertDetail(anomalyId: number) {
+  public async fetchAlertDetail(anomalyId: AnomalyProps["id"]) {
     const [_, alert] = await Promise.all([
       this.markAlertAsread(anomalyId),
       this.alertRepository.findOneWithDetailsByAnomalyId(anomalyId),
@@ -23,13 +23,13 @@ export class AlertService {
     return alert;
   }
 
-  public async markAlertAsread(anomalyId: number) {
+  public async markAlertAsread(anomalyId: AnomalyProps["id"]) {
     const anomaly = await this.anomalyRepository.findOneById(anomalyId);
     await this.anomalyRepository.update(anomaly?.setReadStatus(true));
   }
 
   public async modifyAlertDetails(
-    anomalyId: number,
+    anomalyId: AnomalyProps["id"],
     alertDetails: alertDetails,
   ) {
     const anomaly = await this.anomalyRepository.findOneById(anomalyId);
