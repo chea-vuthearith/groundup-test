@@ -1,5 +1,6 @@
 import { relations } from "drizzle-orm";
 import {
+  boolean,
   date,
   integer,
   pgEnum,
@@ -7,7 +8,6 @@ import {
   text,
   varchar,
 } from "drizzle-orm/pg-core";
-import { machines } from "./machines-schema";
 import { soundClips } from "./sound-clips-schema";
 
 export const suspectedReasonEnum = pgEnum("suspected_reason", ["blank"]);
@@ -18,14 +18,10 @@ export const anomalyLevelEnum = pgEnum("anomaly_level", [
   "severe",
 ]);
 
-export const alerts = pgTable("alerts", {
+export const anomalies = pgTable("anomaly", {
   id: integer("id").generatedByDefaultAsIdentity().primaryKey().notNull(),
-  timestamp: date("timestamp").defaultNow(),
-  machineId: integer("machine_id")
-    .references(() => machines.id, {
-      onDelete: "cascade",
-    })
-    .notNull(),
+  timestamp: date("timestamp").defaultNow().notNull(),
+  readStatus: boolean("read_status").default(false).notNull(),
   anomalyLevel: anomalyLevelEnum("anomaly_level").notNull(),
   sensor: varchar("sensor", { length: 255 }).notNull(),
   soundClipId: integer("sound_clip_id")
@@ -40,13 +36,9 @@ export const alerts = pgTable("alerts", {
   comments: text("comments"),
 });
 
-export const alertsRelations = relations(alerts, ({ one, many }) => ({
-  machine: one(machines, {
-    fields: [alerts.machineId],
-    references: [machines.id],
-  }),
+export const alertsRelations = relations(anomalies, ({ one, many }) => ({
   soundClip: one(soundClips, {
-    fields: [alerts.soundClipId],
+    fields: [anomalies.soundClipId],
     references: [soundClips.id],
   }),
 }));
