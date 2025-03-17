@@ -23,7 +23,7 @@ const SoundCharts = (props: Props) => {
     <>
       <div className="relative flex grow flex-col gap-y-2">
         <h2 className="text-xl">{props.title}</h2>
-        <div className="[&_div]:flex [&_div]:flex-col-reverse [&_div]:gap-y-4">
+        <div className="min-h-[400px] [&_div]:flex [&_div]:flex-col-reverse [&_div]:gap-y-4">
           <WaveSurferReact
             waveColor="#526cfe"
             onInit={onInit}

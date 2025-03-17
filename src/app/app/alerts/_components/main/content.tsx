@@ -48,11 +48,6 @@ const Content = () => {
   const form = useForm<AlertDetailsForm>({
     resolver: zodResolver(alertDetailsForm),
     mode: "onChange",
-    defaultValues: {
-      actionRequired: null,
-      comments: null,
-      suspectedReason: null,
-    },
   });
 
   const patchFormDetailsMutation = api.alerts.patchAlertDetails.useMutation();
@@ -73,7 +68,7 @@ const Content = () => {
   };
 
   React.useEffect(() => {
-    form.reset();
+    form.reset(undefined, { keepDefaultValues: false });
     form.setValue("comments", defaultValues.comments);
     form.setValue("actionRequired", defaultValues.actionRequired);
     form.setValue("suspectedReason", defaultValues.suspectedReason);
