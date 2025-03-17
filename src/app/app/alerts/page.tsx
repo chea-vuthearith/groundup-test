@@ -1,5 +1,5 @@
-import Content from "./components/main/content";
-import Sidebar from "./components/main/sidebar";
+import Content from "./_components/main/content";
+import Sidebar from "./_components/main/sidebar";
 
 const AlertsPage = () => {
   return (

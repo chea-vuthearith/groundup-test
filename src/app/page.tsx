@@ -1,3 +1,5 @@
-export default async function Home() {
-  return <></>;
-}
+const page = () => {
+  return null;
+};
+
+export default page;

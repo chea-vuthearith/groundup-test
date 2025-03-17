@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import groundUpLogo from "~/../public/GroundUp.png";
+import { capitalize } from "~/utils/common";
 
 const pages = ["dashboard", "alerts"];
 const Navbar = ({ username }: { username: string }) => {
@@ -21,10 +22,10 @@ const Navbar = ({ username }: { username: string }) => {
               <li key={pathname} className="flex">
                 <Link
                   href={pathname}
-                  className={`px-6 py-4 ${
+                  className={`border-b-[3px] px-6 py-4 ${
                     isCurrentPage
-                      ? "border-b-[3px] border-b-primary bg-[#F0F5FF] "
-                      : ""
+                      ? " border-b-primary bg-[#F0F5FF] "
+                      : "border-b-transparent"
                   }
                   `}
                 >
@@ -41,7 +42,7 @@ const Navbar = ({ username }: { username: string }) => {
           <BellDot />
           <div className="min-h-full w-[1px] bg-gray-500" />
           <p className="text-gray-500 text-sm">
-            Welcome {username.charAt(0).toUpperCase() + username.slice(1)}!
+            Welcome {capitalize(username)}!
           </p>
         </ul>
       </nav>

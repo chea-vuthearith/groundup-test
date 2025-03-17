@@ -2,7 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "~/server/auth";
 import { ROUTE_PATHS } from "./utils/constants/route-paths";
 
-const protectedRoutes: string[] = [ROUTE_PATHS.APP];
+const protectedRoutes: string[] = [ROUTE_PATHS.APP.HOME];
 
 export default async function middleware(req: NextRequest) {
   const session = await auth();
@@ -15,7 +15,7 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL(ROUTE_PATHS.LOGIN, req.url));
 
   if (session && pathname === "/")
-    return NextResponse.redirect(new URL(ROUTE_PATHS.APP, req.url));
+    return NextResponse.redirect(new URL(ROUTE_PATHS.APP.ALERTS, req.url));
 
   return NextResponse.next();
 }

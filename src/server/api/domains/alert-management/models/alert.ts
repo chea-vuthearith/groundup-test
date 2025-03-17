@@ -21,6 +21,7 @@ export type AlertSummaryProps = {
   suspectedReason: AnomalyProps["suspectedReason"];
   timestamp: AnomalyProps["timestamp"];
   machineName: MachineProps["name"];
+  hasBeenRead: AnomalyProps["hasBeenRead"];
 };
 
 export class AlertSummary {

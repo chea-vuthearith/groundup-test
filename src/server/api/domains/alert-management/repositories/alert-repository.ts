@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { eq } from "drizzle-orm";
+import { asc, eq } from "drizzle-orm";
 import type { DbService } from "~/server/db";
 import { anomalies, machines, soundClips } from "~/server/db/schema";
 import { ErrorBoundary } from "~/utils/error-handling";
@@ -14,14 +14,16 @@ export class AlertRepository {
       .getQueryClient()
       .select({
         anomalyId: anomalies.id,
+        machineName: machines.name,
+        timestamp: anomalies.timestamp,
+        hasBeenRead: anomalies.hasBeenRead,
         anomalyLevel: anomalies.anomalyLevel,
         suspectedReason: anomalies.suspectedReason,
-        timestamp: anomalies.timestamp,
-        machineName: machines.name,
       })
       .from(anomalies)
       .innerJoin(soundClips, eq(soundClips.id, anomalies.soundClipId))
-      .innerJoin(machines, eq(machines.id, soundClips.machineId));
+      .innerJoin(machines, eq(machines.id, soundClips.machineId))
+      .orderBy(asc(anomalies.timestamp));
 
     const entities = result.map((r) => new AlertSummary(r));
     return entities;

@@ -1,11 +1,5 @@
-import React from 'react'
+const AppPage = () => {
+  return null;
+};
 
-type Props = {}
-
-const AppPage = (props: Props) => {
-  return (
-    <div>page</div>
-  )
-}
-
-export default AppPage
+export default AppPage;

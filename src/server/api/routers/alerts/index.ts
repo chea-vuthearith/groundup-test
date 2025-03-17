@@ -8,6 +8,7 @@ export const alertsRouter = createTRPCRouter({
     const alerts = entities.map((e) => e.getValue());
     return alerts;
   }),
+
   getAlertDetails: protectedProcedure
     .input(getAlertDetailsValidator)
     .query(async ({ ctx, input }) => {

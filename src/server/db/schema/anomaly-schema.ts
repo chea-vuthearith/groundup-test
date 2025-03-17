@@ -21,7 +21,7 @@ export const anomalyLevelEnum = pgEnum("anomaly_level", [
 export const anomalies = pgTable("anomaly", {
   id: integer("id").generatedByDefaultAsIdentity().primaryKey().notNull(),
   timestamp: date("timestamp").defaultNow().notNull(),
-  readStatus: boolean("read_status").default(false).notNull(),
+  hasBeenRead: boolean("read_status").default(false).notNull(),
   anomalyLevel: anomalyLevelEnum("anomaly_level").notNull(),
   sensor: varchar("sensor", { length: 255 }).notNull(),
   soundClipId: integer("sound_clip_id")
