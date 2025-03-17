@@ -11,8 +11,8 @@ export const soundClips = pgTable("sound_clips", {
     })
     .notNull(),
   url: text("url").notNull(),
-  waveform: text("waveform").notNull(),
-  spectrogram: text("spectogram").notNull(),
+  waveform: text("waveform"),
+  spectrogram: text("spectogram"),
 });
 
 export const soundClipsRelations = relations(soundClips, ({ one, many }) => ({
