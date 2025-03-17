@@ -7,12 +7,12 @@ type Props = {
   audioUrl: string;
 };
 const SoundCharts = (props: Props) => {
-  const audioUrl = "/1.wav";
   const containerRef = React.useRef<HTMLDivElement | null>(null);
+  const waveSurferRef = React.useRef<WaveSurfer | null>(null);
 
   const wavesurferOptions = React.useMemo(
     () => ({
-      url: audioUrl,
+      url: props.audioUrl,
       getPlugins: () => [
         Spectrogram.create({
           labels: true,
@@ -22,16 +22,19 @@ const SoundCharts = (props: Props) => {
       ],
       plugins: [],
     }),
-    [audioUrl],
+    [props.audioUrl],
   );
 
   React.useEffect(() => {
-    WaveSurfer.create({
-      ...wavesurferOptions,
-      mediaControls: true,
-      container: containerRef.current as HTMLElement,
-      plugins: wavesurferOptions.getPlugins(),
-    });
+    if (!waveSurferRef.current) {
+      waveSurferRef.current = WaveSurfer.create({
+        ...wavesurferOptions,
+        mediaControls: true,
+        container: containerRef.current as HTMLElement,
+        plugins: wavesurferOptions.getPlugins(),
+      });
+    }
+    // waveSurferRef.current?.destroy();
   }, []);
 
   return (

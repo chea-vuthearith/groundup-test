@@ -18,27 +18,31 @@ import { actionRequiredEnum, suspectedReasonEnum } from "~/server/db/schema";
 import { api } from "~/trpc/react";
 import { capitalize } from "~/utils/common";
 import { useAlertStore } from "../../hooks/use-alert-store";
-import type { AlertDetails } from "../../types";
 import SoundCharts from "../sound-charts";
 
 const alertDetailsForm = patchAlertDetailsValidator.omit({ anomalyId: true });
-const Content = (props: AlertDetails) => {
+const Content = () => {
   type AlertDetailsForm = z.infer<typeof alertDetailsForm>;
   const form = useForm<AlertDetailsForm>({
     resolver: zodResolver(alertDetailsForm),
   });
   const { selectedAnomalyId } = useAlertStore();
 
+  const getAlertDetailsQuery = api.alerts.getAlertDetails.useQuery({
+    anomalyId: selectedAnomalyId,
+  });
+  const { data, isLoading } = getAlertDetailsQuery;
+
   const patchFormDetailsMutation = api.alerts.patchAlertDetails.useMutation();
   const alertUtils = api.useUtils().alerts;
   const onSubmit = (data: AlertDetailsForm) => {
     patchFormDetailsMutation.mutate(
-      { anomalyId: props.anomaly.id, ...data },
+      { anomalyId: selectedAnomalyId, ...data },
       {
         onSuccess: () => {
           toast.success("Details updated!");
-          alertUtils.getAlertDetails.invalidate({
-            anomalyId: props.anomaly.id,
+          void alertUtils.getAlertDetails.invalidate({
+            anomalyId: selectedAnomalyId,
           });
         },
         onError: () => {
@@ -47,12 +51,8 @@ const Content = (props: AlertDetails) => {
       },
     );
   };
-  const getAlertDetailsQuery = api.alerts.getAlertDetails.useQuery({
-    anomalyId: selectedAnomalyId,
-  });
-  const { data, isLoading } = getAlertDetailsQuery;
 
-  if (!selectedAnomalyId) return null;
+  if (!data) return null;
 
   return (
     <div className={cn("flex grow flex-col gap-y-7 overflow-y-auto px-9 py-4")}>
@@ -64,11 +64,11 @@ const Content = (props: AlertDetails) => {
       <div className="flex w-full border-t pt-4">
         <div className="flex w-full gap-x-14">
           <SoundCharts
-            audioUrl={data?.soundClip.url}
+            audioUrl={data.soundClip.url}
             title="Anomaly Machine Output"
           />
           <SoundCharts
-            audioUrl={data?.soundClip.url}
+            audioUrl={data.soundClip.url}
             title="Normal Machine Output"
           />
         </div>
@@ -80,7 +80,7 @@ const Content = (props: AlertDetails) => {
           onSubmit={form.handleSubmit(onSubmit)}
         >
           <p className="font-bold text-base">Equipment</p>
-          <p>{props.machine.name}</p>
+          <p>{data.machine.name}</p>
           <FormField
             control={form.control}
             name="suspectedReason"
