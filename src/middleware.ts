@@ -11,10 +11,10 @@ export default async function middleware(req: NextRequest) {
     pathname.startsWith(route),
   );
 
-  if (isProtected && !session)
+  if (!session)
     return NextResponse.redirect(new URL(ROUTE_PATHS.LOGIN, req.url));
 
-  if (session && pathname === "/")
+  if (pathname === "/")
     return NextResponse.redirect(new URL(ROUTE_PATHS.APP.ALERTS, req.url));
 
   return NextResponse.next();
