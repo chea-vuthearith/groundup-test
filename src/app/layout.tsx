@@ -2,6 +2,7 @@ import "~/styles/globals.css";
 
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
+import { cn } from "~/lib/utils";
 import { TRPCReactProvider } from "~/trpc/react";
 
 export const metadata: Metadata = {
@@ -19,7 +20,7 @@ export default async function RootLayout({
       suppressHydrationWarning
       className={`${GeistSans.variable}`}
     >
-      <body className="flex h-dvh w-dvw flex-col">
+      <body className={cn("flex h-dvh w-dvw flex-col")}>
         <TRPCReactProvider>{children}</TRPCReactProvider>
       </body>
     </html>

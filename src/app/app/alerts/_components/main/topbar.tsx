@@ -27,9 +27,9 @@ const Topbar = () => {
   });
 
   return (
-    <div className="flex gap-x-4 border-b border-b-gray-500 p-4">
+    <div className={cn("flex gap-x-4 border-b border-b-gray-500 p-4")}>
       <Select value={machineName} onValueChange={setMachineName}>
-        <SelectTrigger className="w-36 border-gray-500">
+        <SelectTrigger className={cn("w-36 border-gray-500")}>
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
@@ -66,7 +66,7 @@ const Topbar = () => {
               )}
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
+          <PopoverContent className={cn("w-auto p-0")} align="start">
             <Calendar
               initialFocus
               mode="range"
