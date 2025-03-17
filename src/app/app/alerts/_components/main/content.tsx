@@ -28,10 +28,11 @@ const blankData = {
 
 const Content = () => {
   const { selectedAnomalyId } = useAlertStore();
-  const getAlertDetailsQuery = api.alerts.getAlertDetails.useQuery({
-    anomalyId: selectedAnomalyId,
-  });
-  const { data, isLoading } = getAlertDetailsQuery;
+  const [data, getAlertDetailsQuery] =
+    api.alerts.getAlertDetails.useSuspenseQuery({
+      anomalyId: selectedAnomalyId,
+    });
+  // const { data, isLoading } = getAlertDetailsQuery;
   // const defaultValues = data ?? blankData;
   // const alertDetailsForm = patchAlertDetailsValidator
   //   .omit({ anomalyId: true })
@@ -47,7 +48,11 @@ const Content = () => {
   const form = useForm<AlertDetailsForm>({
     resolver: zodResolver(alertDetailsForm),
     mode: "onChange",
-    defaultValues: data,
+    defaultValues: {
+      comments: data.anomaly.comments ?? "",
+      actionRequired: data.anomaly.actionRequired ?? "",
+      suspectedReason: data.anomaly.suspectedReason ?? "",
+    },
   });
 
   const patchFormDetailsMutation = api.alerts.patchAlertDetails.useMutation();

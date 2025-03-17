@@ -16,7 +16,7 @@ const Sidebar = () => {
     [data],
   );
   return (
-    <div className={cn("h-full min-w-80 overflow-hidden rounded-md border-r")}>
+    <div className={cn("h-full max-w-80 overflow-hidden rounded-md border-r")}>
       {/* action bar */}
       <div className={cn("w-full px-10 py-4")}>
         <button
