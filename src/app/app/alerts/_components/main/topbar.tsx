@@ -1,5 +1,5 @@
 "use client";
-import { addDays, format } from "date-fns";
+import { format, subDays } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import * as React from "react";
 import type { DateRange } from "react-day-picker";
@@ -22,14 +22,14 @@ import { cn } from "~/lib/utils";
 const Topbar = () => {
   const [machineName, setMachineName] = React.useState("all");
   const [dateRange, setDateRange] = React.useState<DateRange | undefined>({
-    from: new Date(2022, 0, 20),
-    to: addDays(new Date(2022, 0, 20), 20),
+    from: subDays(new Date(), 20),
+    to: new Date(),
   });
 
   return (
     <div
       className={cn(
-        "[&>button]:!ring-0 flex gap-x-4 border-b p-4 [&>button]:border-gray-400 ",
+        "[&>button]:!ring-0 flex gap-x-4 border-b p-4 [&>button]:border-gray-400",
       )}
     >
       <Select value={machineName} onValueChange={setMachineName}>

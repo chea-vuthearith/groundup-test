@@ -7,7 +7,7 @@ const AlertsPage = () => {
   return (
     <div className={cn("flex grow flex-col")}>
       <Topbar />
-      <div className={cn("flex grow")}>
+      <div className={cn("flex grow overflow-hidden")}>
         <Sidebar />
         <Content />
       </div>
