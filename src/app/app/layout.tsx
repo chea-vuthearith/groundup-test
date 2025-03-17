@@ -12,7 +12,9 @@ const AppLayout = async (props: Props) => {
     <>
       <Navbar username={session.user.name} />
       <div
-        className={cn("flex h-full w-full grow border-[#F8F8FF] border-[20px]")}
+        className={cn(
+          "flex h-full w-full grow overflow-hidden border-[#F8F8FF] border-[20px]",
+        )}
       >
         <div className={cn("flex grow rounded-lg border")}>
           {props.children}
