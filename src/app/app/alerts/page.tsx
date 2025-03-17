@@ -9,7 +9,11 @@ const AlertsPage = () => {
       <Topbar />
       <div className={cn("flex grow overflow-hidden")}>
         <Sidebar />
-        <Content />
+        <Content
+          anomaly={{}}
+          machine={{ name: "hi" }}
+          soundClip={{ url: "/1.wav" }}
+        />
       </div>
     </div>
   );

@@ -1,6 +1,9 @@
 import { alertService } from "../../domains/alert-management/services";
 import { createTRPCRouter, protectedProcedure } from "../../trpc";
-import { getAlertDetailsValidator } from "./validator";
+import {
+  getAlertDetailsValidator,
+  patchAlertDetailsValidator,
+} from "./validator";
 
 export const alertsRouter = createTRPCRouter({
   getAllAlertSummaries: protectedProcedure.query(async ({ ctx }) => {
@@ -15,5 +18,12 @@ export const alertsRouter = createTRPCRouter({
       const entity = await alertService.fetchAlertDetail(input.anomalyId);
       const alert = entity.getValue();
       return alert;
+    }),
+
+  patchAlertDetails: protectedProcedure
+    .input(patchAlertDetailsValidator)
+    .mutation(async ({ ctx, input }) => {
+      const { anomalyId, ...anomalyDetails } = input;
+      await alertService.modifyAlertDetails(anomalyId, anomalyDetails);
     }),
 });
