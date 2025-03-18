@@ -1,0 +1,1 @@
+ALTER TABLE "anomalies" RENAME COLUMN "read_status" TO "has_been_read";
