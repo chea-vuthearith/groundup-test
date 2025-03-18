@@ -48,6 +48,7 @@ const Content = () => {
   const form = useForm<AlertDetailsForm>({
     resolver: zodResolver(alertDetailsForm),
     mode: "onChange",
+    defaultValues: defaultValues,
   });
 
   const patchFormDetailsMutation = api.alerts.patchAlertDetails.useMutation();
