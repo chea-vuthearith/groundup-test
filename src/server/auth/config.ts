@@ -7,6 +7,7 @@ import {
     accounts,
   users,
 } from "~/server/db/schema";
+import { ROUTE_PATHS } from "~/utils/constants/route-paths";
 import { userAuthenticationService } from "../api/domains/user-management/services";
 
 /**
@@ -71,6 +72,13 @@ export const authConfig = {
   },
   secret:process.env.AUTH_SECRET,
   callbacks: {
+    async redirect({ url, baseUrl }) {
+      // Allows relative callback URLs
+      if (url.startsWith("/")) return `${baseUrl}${ROUTE_PATHS.APP.DASHBOARD}`
+
+      return baseUrl
+    },
+
     async jwt({token, user, session}){
       if (user) {
         token.id = user.id;
