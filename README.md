@@ -2,7 +2,7 @@
 
 ## Tech Used  
 
-- **Framework & UI**: Next.js, React, Tailwind CSS  
+- **Framework & UI**: Next.js, React, Tailwind CSS, shadcn/ui
 - **Database & ORM**: PostgreSQL, Drizzle ORM, @vercel/postgres  
 - **State Management**: Zustand, React Query  
 - **Authentication**: NextAuth.js, @auth/drizzle-adapter  
