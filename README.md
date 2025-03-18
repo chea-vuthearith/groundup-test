@@ -1,29 +1,19 @@
-# Create T3 App
+# Technical Test  
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+## Tech Used  
 
-## What's next? How do I make an app with this?
+- **Framework & UI**: Next.js, React, Tailwind CSS  
+- **Database & ORM**: PostgreSQL, Drizzle ORM, @vercel/postgres  
+- **State Management**: Zustand, React Query  
+- **Authentication**: NextAuth.js, @auth/drizzle-adapter  
+- **tRPC**: @trpc/server, @trpc/react-query, @trpc/client  
+- **Validation**: Zod, drizzle-zod  
+- **Audio Processing**: wavesurfer.js
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+## Notes & Assumptions  
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
-
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
-
-## Learn More
-
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
-
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
-
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
-
-## How do I deploy this?
-
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+- This project follows a **Domain Driven Design** approach.  
+- Since no `Normal Machine Output` audio clips were provided, the output matches the `Anomaly Machine Output`.  
+- Placeholder options were added for `Suspected Reason` and `Action Required`.  
+- The `Date` picker was mentioned in the requirements but wasn't in the `Figma design`, so I placed it next to the machine name filter.  
+- Each sound clip has a **one-to-one relationship** with an anomaly.  
